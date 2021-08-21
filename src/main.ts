@@ -23,7 +23,11 @@ import '@ionic/vue/css/display.css'
 /* Theme variables */
 import './theme/variables.css'
 
-const app = createApp(App).use(IonicVue).use(router)
+const app = createApp(App)
+  .use(IonicVue)
+  .use(router)
+
+console.log(process.env.VUE_APP_GRAPHQL_URL)
 
 router.isReady().then(() => {
   app.mount('#app')

@@ -48,6 +48,7 @@ import {
 } from '@ionic/vue'
 import { defineComponent } from 'vue'
 import { book } from 'ionicons/icons'
+import { listBooks } from '../queries/listBooks'
 
 export default defineComponent({
   name: 'Home',
@@ -61,6 +62,9 @@ export default defineComponent({
   },
   setup() {
     return { book }
+  },
+  mounted() {
+    listBooks().then(console.log)
   }
 })
 </script>
