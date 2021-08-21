@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "libro-audio",
+	"webDir": "dist",
+	"bundledWebRuntime": false
+}

@@ -1,0 +1,7 @@
+{
+  "name": "libro-audio",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
