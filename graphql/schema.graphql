@@ -1,0 +1,9 @@
+type Book @collection(name: "books") {
+  title: String
+  description: String
+  author: String
+}
+
+type Query {
+  books: [Book!]
+}
