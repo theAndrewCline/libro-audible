@@ -14,15 +14,14 @@
     <ion-content :fullscreen="true">
       <!-- CONTENT -->
 
-
       <ion-grid>
-
         <ion-input v-model="title" placeholder="title"></ion-input>
         <ion-input v-model="description" placeholder="description"></ion-input>
         <ion-input v-model="author" placeholder="author"></ion-input>
 
-        <ion-button @click="addFormSubmit()">Add Book</ion-button>
-
+        <ion-button @click="addFormSubmit()" :disabled="submitting"
+          >Add Book</ion-button
+        >
       </ion-grid>
     </ion-content>
   </ion-page>
@@ -38,7 +37,8 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  IonButton
+  IonButton,
+  toastController
 } from '@ionic/vue'
 import { defineComponent } from 'vue'
 import { book } from 'ionicons/icons'
@@ -70,19 +70,29 @@ export default defineComponent({
     }
   },
   methods: {
-    addFormSubmit() {
-      const { title, description, author} = this
+    async addFormSubmit() {
+      const { title, description, author } = this
 
       if (!this.submitting) {
-        this.submitting = true 
-        createBook({ title, description, author }).then(() => {
-          this.submitting = false
-        })
-        .catch((e) => {
-          this.error = e
-        })
-      }
+        this.submitting = true
 
+        const newBook = await createBook({ title, description, author })
+
+        this.openToast(`added ${newBook.data.createBook.title}`)
+
+        this.submitting = false
+        this.title = ''
+        this.description = ''
+        this.author = ''
+      }
+    },
+    async openToast(message: string) {
+      const toast = await toastController.create({
+        message,
+        duration: 2000
+      })
+
+      toast.present()
     }
   }
 })

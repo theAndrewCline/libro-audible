@@ -23,7 +23,7 @@ export const listBooks = async (): Promise<ListBooksQuery> => {
     method: 'POST',
     headers: {
       accept: 'application/json',
-      authorization: 'Basic ' + process.env.VUE_APP_FAUNA_SECERT,
+      authorization: 'Basic ' + process.env.VUE_APP_FAUNA_SECRET,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ query: LIST_BOOKS_QUERY })
