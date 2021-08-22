@@ -1,4 +1,11 @@
-export const listBooks = async () => {
+import { Book } from '.'
+
+type ListBooksQuery = {
+  data: Book[]
+  errors: any[]
+}
+
+export const listBooks = async (): Promise<ListBooksQuery> => {
   const LIST_BOOKS_QUERY = `
     query ListBooks {
       books {

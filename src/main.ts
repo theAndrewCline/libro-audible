@@ -27,8 +27,6 @@ const app = createApp(App)
   .use(IonicVue)
   .use(router)
 
-console.log(process.env.VUE_APP_GRAPHQL_URL)
-
 router.isReady().then(() => {
   app.mount('#app')
 })

@@ -6,7 +6,7 @@
       <ion-toolbar color="primary">
         <div class="toolbar">
           <ion-icon :icon="book" class="header-icon" size="large"></ion-icon>
-          <ion-title>Libro Audio</ion-title>
+          <ion-title>Add A Book</ion-title>
         </div>
       </ion-toolbar>
     </ion-header>
@@ -14,24 +14,15 @@
     <ion-content :fullscreen="true">
       <!-- CONTENT -->
 
+
       <ion-grid>
-        <ion-text>
-          <ion-row>
-            <ion-col>
-              <ion-text color="primary">
-                <div class="title">
-                  <ion-icon
-                    :icon="book"
-                    size="large"
-                    class="title-icon"
-                  ></ion-icon>
-                  <h1>Libro Audio</h1>
-                </div>
-              </ion-text>
-              <p>A place for all your audio books</p>
-            </ion-col>
-          </ion-row>
-        </ion-text>
+
+        <ion-input v-model="title" placeholder="title"></ion-input>
+        <ion-input v-model="description" placeholder="description"></ion-input>
+        <ion-input v-model="author" placeholder="author"></ion-input>
+
+        <ion-button @click="addFormSubmit()">Add Book</ion-button>
+
       </ion-grid>
     </ion-content>
   </ion-page>
@@ -40,31 +31,59 @@
 <script lang="ts">
 import {
   IonContent,
+  IonGrid,
   IonHeader,
+  IonIcon,
+  IonInput,
   IonPage,
   IonTitle,
   IonToolbar,
-  IonIcon
+  IonButton
 } from '@ionic/vue'
 import { defineComponent } from 'vue'
 import { book } from 'ionicons/icons'
-import { listBooks } from '../books'
+import { createBook } from '../books'
 
 export default defineComponent({
-  name: 'Home',
+  name: 'CreateBook',
   components: {
     IonContent,
+    IonGrid,
     IonHeader,
+    IonIcon,
+    IonInput,
     IonPage,
     IonTitle,
     IonToolbar,
-    IonIcon
+    IonButton
   },
   setup() {
     return { book }
   },
-  mounted() {
-    listBooks().then(console.log)
+  data() {
+    return {
+      title: '',
+      description: '',
+      author: '',
+      submitting: false,
+      error: null
+    }
+  },
+  methods: {
+    addFormSubmit() {
+      const { title, description, author} = this
+
+      if (!this.submitting) {
+        this.submitting = true 
+        createBook({ title, description, author }).then(() => {
+          this.submitting = false
+        })
+        .catch((e) => {
+          this.error = e
+        })
+      }
+
+    }
   }
 })
 </script>
