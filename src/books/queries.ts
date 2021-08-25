@@ -1,4 +1,5 @@
 import { Book } from '.'
+import { graphqlOperation } from './graphqlOperation'
 
 type ListBooksQuery = {
   data: Book[]
@@ -19,19 +20,7 @@ export const listBooks = async (): Promise<ListBooksQuery> => {
     }
   `
 
-  const fetchResult = await fetch(process.env.VUE_APP_GRAPHQL_URL, {
-    method: 'POST',
-    headers: {
-      accept: 'application/json',
-      authorization: 'Basic ' + process.env.VUE_APP_FAUNA_SECRET,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ query: LIST_BOOKS_QUERY })
-  })
-
-  const jsonResult = await fetchResult.json()
-
-  return jsonResult
+  return graphqlOperation<ListBooksQuery>(LIST_BOOKS_QUERY)
 }
 
 type GetBookQuery = {
@@ -53,17 +42,5 @@ export const getBook = async (): Promise<GetBookQuery> => {
     }
   `
 
-  const fetchResult = await fetch(process.env.VUE_APP_GRAPHQL_URL, {
-    method: 'POST',
-    headers: {
-      accept: 'application/json',
-      authorization: 'Basic ' + process.env.VUE_APP_FAUNA_SECERT,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ query: GET_BOOK_QUERY })
-  })
-
-  const jsonResult = await fetchResult.json()
-
-  return jsonResult
+  return graphqlOperation<GetBookQuery>(GET_BOOK_QUERY)
 }

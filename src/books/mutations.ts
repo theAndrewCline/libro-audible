@@ -1,4 +1,5 @@
 import { Book } from '.'
+import { graphqlOperation } from './graphqlOperation'
 
 type CreateBookInput = {
   title: string
@@ -28,21 +29,8 @@ const CREATE_BOOK = `
 
 export const createBook = async (
   variables: CreateBookInput
-): Promise<CreateBookReponse> => {
-  const fetchResult = await fetch(process.env.VUE_APP_GRAPHQL_URL, {
-    method: 'POST',
-    headers: {
-      accept: 'application/json',
-      authorization: 'Basic ' + process.env.VUE_APP_FAUNA_SECRET,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ query: CREATE_BOOK, variables })
-  })
-
-  const result = await fetchResult.json()
-
-  return result
-}
+): Promise<CreateBookReponse> =>
+  graphqlOperation<CreateBookReponse>(CREATE_BOOK, variables)
 
 type UpdateBookInput = {
   _id: string
@@ -76,21 +64,15 @@ const UPDATE_BOOK = `
 
 export const updateBook = async (
   variables: UpdateBookInput
-): Promise<UpdateBookResponse> => {
-  const fetchResult = await fetch(process.env.VUE_APP_GRAPHQL_URL, {
-    method: 'POST',
-    headers: {
-      accept: 'application/json',
-      authorization: 'Basic ' + process.env.VUE_APP_FAUNA_SECRET,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ query: UPDATE_BOOK, variables })
+): Promise<UpdateBookResponse> =>
+  graphqlOperation<UpdateBookResponse>(UPDATE_BOOK, {
+    id: variables._id,
+    data: {
+      title: variables.title,
+      description: variables.description,
+      author: variables.author
+    }
   })
-
-  const result = await fetchResult.json()
-
-  return result
-}
 
 type DeleteBookInput = string
 
@@ -113,18 +95,5 @@ const DELETE_BOOK = `
 
 export const deleteBook = async (
   id: DeleteBookInput
-): Promise<DeleteBookResponse> => {
-  const fetchResult = await fetch(process.env.VUE_APP_GRAPHQL_URL, {
-    method: 'POST',
-    headers: {
-      accept: 'application/json',
-      authorization: 'Basic ' + process.env.VUE_APP_FAUNA_SECRET,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ query: DELETE_BOOK, variables: { id } })
-  })
-
-  const result = await fetchResult.json()
-
-  return result
-}
+): Promise<DeleteBookResponse> =>
+  graphqlOperation<DeleteBookResponse>(DELETE_BOOK, { id })
