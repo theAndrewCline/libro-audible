@@ -5,5 +5,5 @@ export type Book = {
   author?: string
 }
 
-export { createBook } from './mutations'
-export { listBooks } from './queries'
+export { createBook, updateBook, deleteBook } from './mutations'
+export { listBooks, getBook } from './queries'
